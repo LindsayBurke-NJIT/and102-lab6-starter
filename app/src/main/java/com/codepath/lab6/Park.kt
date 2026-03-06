@@ -1,6 +1,8 @@
 package com.codepath.lab6
 
-import android.support.annotation.Keep
+import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,6 +15,7 @@ data class ParksResponse(
 
 @Keep
 @Serializable
+@Parcelize
 data class Park(
     @SerialName("fullName")
     val fullName: String?,
@@ -20,14 +23,15 @@ data class Park(
     val description: String?,
     @SerialName("images")
     val images: List<ParkImage>?
-) : java.io.Serializable {
+) : Parcelable {
     val imageUrl: String?
         get() = images?.firstOrNull()?.url
 }
 
 @Keep
 @Serializable
+@Parcelize
 data class ParkImage(
     @SerialName("url")
     val url: String?
-) : java.io.Serializable
+) : Parcelable

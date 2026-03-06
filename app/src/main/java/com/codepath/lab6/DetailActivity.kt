@@ -1,5 +1,6 @@
 package com.codepath.lab6
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,9 +16,20 @@ class DetailActivity : AppCompatActivity() {
         val detailTitleTextView: TextView = findViewById(R.id.detailTitle)
         val detailDescriptionTextView: TextView = findViewById(R.id.detailDescription)
 
-        // Retrieve data passed via Intent
-        val park = intent.getSerializableExtra(PARK_EXTRA) as? Park
-        val campground = intent.getSerializableExtra(CAMPGROUND_EXTRA) as? Campground
+        // Retrieve data passed via Intent (Parcelable is preferred over Serializable)
+        val park = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(PARK_EXTRA, Park::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<Park>(PARK_EXTRA)
+        }
+
+        val campground = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(CAMPGROUND_EXTRA, Campground::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<Campground>(CAMPGROUND_EXTRA)
+        }
 
         // Populate UI based on type
         when {
